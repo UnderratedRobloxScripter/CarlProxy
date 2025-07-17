@@ -2,13 +2,18 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const app = express();
 
+const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.post('/chat', async (req, res) => {
   const userMessage = req.body.message;
+
+  if (!process.env.OPENAI_API_KEY || !process.env.OPENAI_PROJECT_ID) {
+    console.error("❌ Missing API key or project ID.");
+    return res.status(500).json({ error: "Server misconfigured." });
+  }
 
   try {
     const response = await axios.post(
@@ -23,6 +28,7 @@ app.post('/chat', async (req, res) => {
       {
         headers: {
           'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'OpenAI-Project': process.env.OPENAI_PROJECT_ID,
           'Content-Type': 'application/json'
         }
       }
@@ -31,9 +37,9 @@ app.post('/chat', async (req, res) => {
     const reply = response.data.choices[0].message.content;
     res.json({ reply });
 
-  } catch (err) {
-    console.error(err.response?.data || err.message);
-    res.status(500).json({ error: 'OpenAI request failed' });
+  } catch (error) {
+    console.error("🛑 OpenAI API Error:", error.response?.data || error.message);
+    res.status(500).json({ error: "OpenAI request failed" });
   }
 });
 

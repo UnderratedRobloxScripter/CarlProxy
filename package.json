@@ -1,7 +1,6 @@
 {
-  "name": "carl-chatgpt-proxy",
+  "name": "carlproxy",
   "version": "1.0.0",
-  "description": "ChatGPT proxy server for Roblox NPC",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

@@ -21,7 +21,7 @@ app.post('/chat', async (req, res) => {
       {
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are Carl, an AI NPC in a Roblox game." },
+          { role: "system", content: "You are Carl, an NPC in a Roblox game." },
           { role: "user", content: userMessage }
         ]
       },
@@ -38,7 +38,7 @@ app.post('/chat', async (req, res) => {
     res.json({ reply });
 
   } catch (error) {
-    console.error("🛑 OpenAI API Error:", error.response?.data || error.message);
+    console.error("🛑 OpenAI Error:", error.response?.data || error.message);
     res.status(500).json({ error: "OpenAI request failed" });
   }
 });
@@ -49,5 +49,5 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Carl is listening on port ${PORT}`);
+  console.log(`✅ Carl is listening on port ${PORT}`);
 });
